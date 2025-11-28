@@ -15,4 +15,20 @@ const createTask = async (req, res) => {
     }
 }
 
-export { createTask };
+const fetchAllTasks = async (req, res) => {
+    try {
+        const tasks = await Task.find({});
+        if (tasks) {
+            res.status(200).json({ success: true, tasks });
+        } else {
+            res.status(404).json({ success: false, message: "No Tasks Found" });
+        }
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+
+export { createTask, fetchAllTasks };
+
