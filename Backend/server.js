@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { connectDB } from './utils/ConnectDB.js';
 import authRoutes from './routes/auth.routes.js';
+import taskRoutes from './routes/task.routes.js';
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/task', taskRoutes);
 
 app.listen(PORT, async () => {
     await connectDB();
