@@ -1,8 +1,10 @@
 import express from "express";
-import { createTask, fetchAllTasks, updateTask } from "../controllers/task.controller.js";
+import { createTask, deleteTask, fetchAllTasks, getTask, updateTask } from "../controllers/task.controller.js";
 
 const Router = express.Router();
 
-Router.get('/all', fetchAllTasks).post('/create', createTask).put('/:id', updateTask);
+Router.get('/all', fetchAllTasks)
+Router.post('/create', createTask)
+Router.route('/:id').get(getTask).put(updateTask).delete(deleteTask);
 
 export default Router;
