@@ -30,6 +30,34 @@ const updateTask = async (req, res) => {
     }
 }
 
+const deleteTask = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const deletedTask = await Task.findByIdAndDelete(id);
+        if (deletedTask) {
+            res.status(200).json({ success: true, message: "Task Deleted Successfully" });
+        } else {
+            res.status(404).json({ success: false, message: "Task Not Found" });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+const getTask = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const task = await Task.findById(id);
+        if (task) {
+            res.status(200).json({ success: true, task });
+        } else {
+            res.status(404).json({ success: false, message: "Task Not Found" });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
 const fetchAllTasks = async (_req, res) => {
     try {
         const tasks = await Task.find({});
@@ -45,4 +73,5 @@ const fetchAllTasks = async (_req, res) => {
 }
 
 
-export { createTask, fetchAllTasks, updateTask };
+export { createTask, deleteTask, fetchAllTasks, getTask, updateTask };
+
