@@ -1,10 +1,8 @@
-import { ReactChildren } from "@/utils/types/types";
+import { ReactChildren } from "@/utils/types";
 
 const AuthLayout = ({ children }: ReactChildren) => {
   return (
-    <div className="w-full h-full flex justify-center items-center bg-gray-300 overflow-hidden">
-      {children}
-    </div>
+    <div className="w-full h-full bg-gray-300 overflow-hidden">{children}</div>
   );
 };
 
