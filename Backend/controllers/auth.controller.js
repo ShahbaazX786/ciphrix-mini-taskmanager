@@ -2,9 +2,9 @@ import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
 
 const SignUp = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { fullName, email, password } = req.body;
     try {
-        if (!email || !password || !name) {
+        if (!email || !password || !fullName) {
             throw new Error('All Fields are required');
         }
         const userAlreadyExists = await User.findOne({ email });
@@ -14,7 +14,7 @@ const SignUp = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ name, email, password: hashedPassword });
+        const user = new User({ fullName, email, password: hashedPassword });
         await user.save();
 
         res.status(201).json({
