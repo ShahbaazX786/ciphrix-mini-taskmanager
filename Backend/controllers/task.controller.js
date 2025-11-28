@@ -15,7 +15,22 @@ const createTask = async (req, res) => {
     }
 }
 
-const fetchAllTasks = async (req, res) => {
+const updateTask = async (req, res) => {
+    const id = req.params.id;
+    const { title, description, status } = req.body;
+    try {
+        const updatedTask = await Task.findByIdAndUpdate(id, { title, description, status }, { new: true, runValidators: true });
+        if (updatedTask) {
+            res.status(200).json({ success: true, message: "Task Updated Successfully" });
+        } else {
+            res.status(404).json({ success: false, message: "Task Not Found" });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+const fetchAllTasks = async (_req, res) => {
     try {
         const tasks = await Task.find({});
         if (tasks) {
@@ -30,5 +45,4 @@ const fetchAllTasks = async (req, res) => {
 }
 
 
-export { createTask, fetchAllTasks };
-
+export { createTask, fetchAllTasks, updateTask };
