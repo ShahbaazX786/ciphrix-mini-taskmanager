@@ -14,6 +14,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { testimonials } from "@/utils/constants";
+import Autoplay from "embla-carousel-autoplay";
 import { Star } from "lucide-react";
 import Image from "next/image";
 
@@ -33,6 +34,11 @@ const Tesimonials = () => {
           align: "start",
           loop: true,
         }}
+        plugins={[
+          Autoplay({
+            delay: 5000,
+          }),
+        ]}
         className="w-full max-w-7xl mx-auto my-10"
       >
         <CarouselContent>
@@ -71,10 +77,10 @@ const Tesimonials = () => {
                           {testimonial.userName}
                         </p>
                         <p className="flex justify-center items-center gap-2">
-                          <span className="text-xs bg-purple-600 rounded-full px-2">
+                          <span className="text-xs bg-purple-600 rounded-full px-2 py-0.5">
                             {testimonial.role}
                           </span>
-                          <span className="text-xs bg-pink-600 rounded-full px-2">
+                          <span className="text-xs bg-pink-600 rounded-full px-2 py-0.5">
                             {testimonial.company}
                           </span>
                         </p>
