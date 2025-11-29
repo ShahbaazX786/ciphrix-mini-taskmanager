@@ -1,8 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getFormattedDate } from "@/utils/helpers";
 import { ColumnDef } from "@tanstack/react-table";
+import { Edit, Trash } from "lucide-react";
 
 export type Task = {
   _id: string;
@@ -52,4 +54,23 @@ export const columns: ColumnDef<Task>[] = [
     header: "Created Date",
     cell: ({ row }) => getFormattedDate(row.original.createdAt),
   },
+  {
+    id: "actions",
+    header: "Task Actions",
+    cell: ({ row }) => <ActionButtons row={row} />,
+  },
 ];
+
+export const ActionButtons = ({ row }: { row: any }) => {
+  const id = row?.original?._id;
+  return (
+    <section id={id} className="flex flex-row justify-start items-start gap-2">
+      <Button variant={"default"}>
+        <Edit />
+      </Button>
+      <Button variant={"destructive"}>
+        <Trash />
+      </Button>
+    </section>
+  );
+};

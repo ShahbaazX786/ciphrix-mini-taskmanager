@@ -5,7 +5,7 @@ import Link from "next/link";
 import Typewriter from "typewriter-effect";
 
 const Hero = () => {
-  const isSignedIn = false;
+  const isSignedIn = true;
 
   return (
     <section id="hero">
