@@ -12,7 +12,7 @@ const Hero = () => {
       <div className="text-white font-bold py-36 text-center space-y-5">
         <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl space-y-5 font-extrabold">
           <h1 className="text-gray-800 dark:text-white">The Best</h1>
-          <p className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-600 py-3">
+          <div className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-600 py-3">
             <Typewriter
               options={{
                 strings: [
@@ -28,7 +28,7 @@ const Hero = () => {
                 delay: 50,
               }}
             />
-          </p>
+          </div>
         </div>
         <p className="text-sm md:text-xl font-light text-black dark:text-zinc-400">
           Increase your productivity by <b className="font-bold">10x</b> using
