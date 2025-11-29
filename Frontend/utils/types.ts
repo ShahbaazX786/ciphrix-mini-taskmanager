@@ -13,4 +13,13 @@ type signupPayload = {
 
 type loginPayload = Pick<signupPayload, "email" | "password">;
 
-export type { loginPayload, ReactChildren, signupPayload };
+type testimonial = {
+  userName: string;
+  role: string;
+  company: string;
+  imageUrl: string;
+  quote: string;
+  rating: number;
+};
+
+export type { loginPayload, ReactChildren, signupPayload, testimonial };
