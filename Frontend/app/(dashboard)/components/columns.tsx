@@ -1,6 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { getFormattedDate } from "@/utils/helpers";
 import { ColumnDef } from "@tanstack/react-table";
 
 export type Task = {
@@ -49,5 +50,6 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "createdAt",
     header: "Created Date",
+    cell: ({ row }) => getFormattedDate(row.original.createdAt),
   },
 ];
