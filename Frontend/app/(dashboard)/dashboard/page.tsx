@@ -24,9 +24,9 @@ const dummyTasks = [
 
 const DashboardPage = () => {
   return (
-    <div>
+    <section className="container mx-auto px-8 py-10">
       <DataTable columns={columns} data={dummyTasks} />
-    </div>
+    </section>
   );
 };
 
