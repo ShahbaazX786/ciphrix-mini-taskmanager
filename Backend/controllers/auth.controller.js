@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
+import { generateOTP, generateTokenAndSetCookie, getOTPExpiryTime } from '../utils/helpers.js';
+import { sendWelcomeEmail } from '../utils/nodemailer/sendWelcomeEmail.js';
 
 const SignUp = async (req, res) => {
     const { fullName, email, password } = req.body;
@@ -14,8 +16,13 @@ const SignUp = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ fullName, email, password: hashedPassword });
+        const otp = generateOTP();
+        const otpExpiryTime = getOTPExpiryTime();
+        const user = new User({ fullName, email, password: hashedPassword, otp, otpExpiryTime });
         await user.save();
+
+        generateTokenAndSetCookie(res, req._id);
+        await sendWelcomeEmail(fullName, email, otp);
 
         res.status(201).json({
             success: true, message: "User Created Sucessfully",
