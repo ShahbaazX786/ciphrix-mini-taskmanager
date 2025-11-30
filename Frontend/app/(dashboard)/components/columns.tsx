@@ -65,10 +65,10 @@ export const ActionButtons = ({ row }: { row: any }) => {
   const id = row?.original?._id;
   return (
     <section id={id} className="flex flex-row justify-start items-start gap-2">
-      <Button variant={"default"}>
+      <Button variant={"default"} className="cursor-pointer">
         <Edit />
       </Button>
-      <Button variant={"destructive"}>
+      <Button variant={"destructive"} className="cursor-pointer">
         <Trash />
       </Button>
     </section>
