@@ -1,12 +1,12 @@
 "use client";
 
+import DeleteAlert from "@/components/custom/delete-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getFormattedDate } from "@/lib/helpers";
+import { getFormattedDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash } from "lucide-react";
 import TashSheet from "../dashboard/components/taskSheet";
-import DeleteAlert from "@/components/custom/delete-dialog";
 
 export type Task = {
   _id: string;

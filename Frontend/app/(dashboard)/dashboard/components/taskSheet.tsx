@@ -23,6 +23,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { createTask, updateTask } from "@/lib/api/api.task";
 import { editTaskSchema, newTaskSchema } from "@/lib/schema/task.schema";
+import { useTaskStore } from "@/lib/store/task.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { JSX } from "react";
@@ -36,12 +37,13 @@ const TashSheet = ({
   trigger: JSX.Element;
   mode: "edit" | "new";
 }) => {
+  const { isSheetOpen, closeSheet, selectedTask } = useTaskStore();
   const isEdit = mode === "edit";
   const taskSchema = isEdit ? editTaskSchema : newTaskSchema;
 
   const taskForm = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
+    defaultValues: selectedTask || {
       title: "",
       description: "",
       status: "Pending",
@@ -77,13 +79,15 @@ const TashSheet = ({
   });
 
   const onFormSubmit = (data: z.infer<typeof taskSchema>) => {
-    return isEdit
-      ? updateTaskMutation.mutate(data)
-      : createTaskMutation.mutate(data);
+    if (mode === "edit") {
+      updateTaskMutation.mutate(data);
+    } else {
+      createTaskMutation.mutate(data);
+    }
   };
 
   return (
-    <Sheet>
+    <Sheet open={isSheetOpen} onOpenChange={(open) => !open && closeSheet()}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent className="w-[80%] md:w-[540px] h-full overflow-y-auto">
         <form
