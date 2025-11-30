@@ -5,6 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { getFormattedDate } from "@/utils/helpers";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash } from "lucide-react";
+import TashSheet from "../dashboard/components/taskSheet";
+import DeleteAlert from "@/components/custom/delete-dialog";
 
 export type Task = {
   _id: string;
@@ -65,12 +67,23 @@ export const ActionButtons = ({ row }: { row: any }) => {
   const id = row?.original?._id;
   return (
     <section id={id} className="flex flex-row justify-start items-start gap-2">
-      <Button variant={"default"} className="cursor-pointer">
-        <Edit />
-      </Button>
-      <Button variant={"destructive"} className="cursor-pointer">
-        <Trash />
-      </Button>
+      <TashSheet
+        mode={"edit"}
+        trigger={
+          <Button variant={"default"} className="cursor-pointer">
+            <Edit />
+          </Button>
+        }
+      />
+
+      <DeleteAlert
+        id={id}
+        trigger={
+          <Button variant={"destructive"} className="cursor-pointer">
+            <Trash />
+          </Button>
+        }
+      />
     </section>
   );
 };
