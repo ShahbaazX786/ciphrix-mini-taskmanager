@@ -1,4 +1,4 @@
-import { loginPayload, signupPayload } from "../../utils/types";
+import { loginPayload, signupPayload } from "../types";
 import API from "./api.config";
 
 const signUpUser = async (data: signupPayload) => {

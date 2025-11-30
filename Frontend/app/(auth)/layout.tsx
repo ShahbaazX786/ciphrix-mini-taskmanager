@@ -1,6 +1,6 @@
 import Footer from "@/components/custom/layout/footer";
 import Header from "@/components/custom/layout/header";
-import { ReactChildren } from "@/utils/types";
+import { ReactChildren } from "@/lib/types";
 
 const AuthLayout = ({ children }: ReactChildren) => {
   return (

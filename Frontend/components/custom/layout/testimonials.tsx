@@ -13,7 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { testimonials } from "@/utils/constants";
+import { testimonials } from "@/lib/constants";
 import Autoplay from "embla-carousel-autoplay";
 import { Star } from "lucide-react";
 import Image from "next/image";

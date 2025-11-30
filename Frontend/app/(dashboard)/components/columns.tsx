@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getFormattedDate } from "@/utils/helpers";
+import { getFormattedDate } from "@/lib/helpers";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash } from "lucide-react";
 import TashSheet from "../dashboard/components/taskSheet";

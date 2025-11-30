@@ -1,31 +1,25 @@
+"use client";
+
+import DeleteAlert from "@/components/custom/delete-dialog";
 import { Button } from "@/components/ui/button";
+import { fetchAllTasks } from "@/lib/api/api.task";
+import { useQuery } from "@tanstack/react-query";
+import { Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { columns } from "../components/columns";
 import { DataTable } from "../components/data-table";
-import { Plus, Trash2 } from "lucide-react";
 import TashSheet from "./components/taskSheet";
 
-const dummyTasks = [
-  {
-    _id: "69298be0b54d4d4fd3be3b91",
-    title: "Do a Prank",
-    description: "Run!......",
-    status: "Completed",
-    createdAt: "2025-11-28T11:47:44.886Z",
-    updatedAt: "2025-11-28T12:08:11.644Z",
-    __v: 0,
-  },
-  {
-    _id: "69298be0b54d4d4fd3be3b92",
-    title: "Unsubscribe All stupid channels",
-    description: "yoi yoii yoiii",
-    status: "Pending",
-    createdAt: "2025-11-28T11:47:44.886Z",
-    updatedAt: "2025-11-28T12:08:11.644Z",
-    __v: 0,
-  },
-];
-
 const DashboardPage = () => {
+  const [page] = useState(1);
+  const limit = 10;
+
+  const { data } = useQuery({
+    queryKey: ["tasks", page, limit],
+    queryFn: () => fetchAllTasks(page, limit),
+    staleTime: 60 * 60,
+  });
+
   return (
     <section className="container mx-auto px-8 py-10 bg-gray-200 dark:bg-gray-800">
       <div className="flex flex-row justify-between items-center">
@@ -46,8 +40,7 @@ const DashboardPage = () => {
               </Button>
             }
           />
-          <TashSheet
-            mode={"edit"}
+          <DeleteAlert
             trigger={
               <Button
                 variant={"destructive"}
@@ -57,10 +50,11 @@ const DashboardPage = () => {
                 Delete
               </Button>
             }
+            id={"1"}
           />
         </div>
       </div>
-      <DataTable columns={columns} data={dummyTasks} />
+      <DataTable columns={columns} data={data} />
     </section>
   );
 };

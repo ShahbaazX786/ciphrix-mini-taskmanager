@@ -1,4 +1,4 @@
-import { ReactChildren } from "@/utils/types";
+import { ReactChildren } from "@/lib/types";
 
 const LandingLayout = ({ children }: ReactChildren) => {
   return (

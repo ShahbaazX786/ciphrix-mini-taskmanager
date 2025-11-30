@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldDescription } from "@/components/ui/field";
-import { getAppName } from "@/utils/helpers";
+import { getAppName } from "@/lib/helpers";
 import Image from "next/image";
 import Link from "next/link";
 import LoginForm from "./LoginForm";

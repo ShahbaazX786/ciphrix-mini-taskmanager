@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { createTask, updateTask } from "@/lib/api/api.task";
-import { editTaskSchema, newTaskSchema } from "@/utils/schema/task.schema";
+import { editTaskSchema, newTaskSchema } from "@/lib/schema/task.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { JSX } from "react";
