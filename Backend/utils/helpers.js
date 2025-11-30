@@ -19,11 +19,21 @@ const generateTokenAndSetCookie = async (res, userId, temp = false) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-        maxAge: expiresInMs
+        maxAge: expiresInMs,
+        path: '/'
     });
 
     return token;
 }
 
-export { generateOTP, getOTPExpiryTime, generateTokenAndSetCookie };
+const clearTokenInCookies = async (res) => {
+    await res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        path: '/'
+    });
+}
+
+export { clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime };
 

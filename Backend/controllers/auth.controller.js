@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
-import { generateOTP, generateTokenAndSetCookie, getOTPExpiryTime } from '../utils/helpers.js';
+import { clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime } from '../utils/helpers.js';
 import sendWelcomeEmail from '../utils/nodemailer/sendWelcomeEmail.js';
 
 const SignUp = async (req, res) => {
@@ -43,7 +43,6 @@ const SignIn = async (req, res) => {
         }
         const user = await User.findOne({ email });
 
-
         if (!user) {
             return res.status(404).json({ success: false, message: "Invalid Email or User not Found" });
         }
@@ -54,6 +53,7 @@ const SignIn = async (req, res) => {
             return res.status(404).json({ success: false, message: "Invalid Password" });
         }
 
+        generateTokenAndSetCookie(res, req._id);
         return res.status(200).json({
             success: true, message: "User LoggedIn Sucessfully"
         })
@@ -63,4 +63,14 @@ const SignIn = async (req, res) => {
     }
 }
 
-export { SignUp, SignIn };
+const SignOut = async (_req, res) => {
+    try {
+        await clearTokenInCookies(res);
+        return res.status(200).json({ success: true, message: "User Logged Out Sucessfully" });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+}
+
+export { SignIn, SignOut, SignUp };
+
