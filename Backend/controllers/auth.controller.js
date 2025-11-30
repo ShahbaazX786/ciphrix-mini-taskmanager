@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
 import { generateOTP, generateTokenAndSetCookie, getOTPExpiryTime } from '../utils/helpers.js';
-import { sendWelcomeEmail } from '../utils/nodemailer/sendWelcomeEmail.js';
+import sendWelcomeEmail from '../utils/nodemailer/sendWelcomeEmail.js';
 
 const SignUp = async (req, res) => {
     const { fullName, email, password } = req.body;
