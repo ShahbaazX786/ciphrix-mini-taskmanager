@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { signUpUser } from "@/utils/api/api.auth";
+import { signUpUser } from "@/lib/api/api.auth";
 import { signupFormSchema } from "@/utils/schema/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";

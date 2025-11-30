@@ -21,7 +21,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import { createTask, updateTask } from "@/utils/api/api.task";
+import { createTask, updateTask } from "@/lib/api/api.task";
 import { editTaskSchema, newTaskSchema } from "@/utils/schema/task.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
