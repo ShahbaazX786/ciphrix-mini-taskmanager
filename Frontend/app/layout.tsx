@@ -1,5 +1,5 @@
-import TanStackQueryProvider from "@/utils/providers/tanstack-provider";
-import { ThemeProvider } from "@/utils/providers/theme-provider";
+import TanStackQueryProvider from "@/lib/providers/tanstack-provider";
+import { ThemeProvider } from "@/lib/providers/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
