@@ -58,11 +58,26 @@ const getTask = async (req, res) => {
     }
 }
 
-const fetchAllTasks = async (_req, res) => {
+const fetchAllTasks = async (req, res) => {
     try {
-        const tasks = await Task.find({});
-        if (tasks) {
-            res.status(200).json({ success: true, tasks });
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        if (page < 1 || limit < 1) {
+            res.status(400).json({ success: false, message: 'Invalid query please enter a valid range' });
+        }
+
+        const skip = (page - 1) * limit;
+
+        const [total, taskList] = await Promise.all([
+            Task.countDocuments(),
+            Task.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit)
+        ]);
+
+        if (total && taskList) {
+            const totalPages = Math.ceil(total / limit);
+            const hasNext = skip + taskList.length < total;
+            res.status(200).json({ success: true, page, limit, total, totalPages, hasNext, taskList });
         } else {
             res.status(404).json({ success: false, message: "No Tasks Found" });
         }
