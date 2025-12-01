@@ -21,4 +21,14 @@ const loginUser = async (data: loginPayload) => {
   return res.data;
 };
 
-export { loginUser, signUpUser };
+const logoutUser = async () => {
+  const res = await API.post("/auth/signout");
+  return res.data;
+};
+
+const verifyOTP = async (data: { otp: string }) => {
+  const res = await API.post("/auth/verify-otp", data);
+  return res.data;
+};
+
+export { loginUser, logoutUser, signUpUser, verifyOTP };
