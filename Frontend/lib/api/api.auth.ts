@@ -31,4 +31,9 @@ const verifyOTP = async (data: { otp: string }) => {
   return res.data;
 };
 
-export { loginUser, logoutUser, signUpUser, verifyOTP };
+const refreshToken = async () => {
+  const res = await API.post("/auth/refresh");
+  return res.data;
+};
+
+export { loginUser, logoutUser, refreshToken, signUpUser, verifyOTP };
