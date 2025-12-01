@@ -23,7 +23,8 @@ const generateTokenAndSetCookie = async (res, userId, temp = false) => {
         path: '/'
     });
 
-    return token;
+    const tokenExpiry = Date.now() + expiresInMs;
+    return { token, tokenExpiry };
 }
 
 const clearTokenInCookies = async (res) => {
@@ -37,7 +38,8 @@ const clearTokenInCookies = async (res) => {
 
 const clearTempTokenWithValidToken = async (res, userId) => {
     await clearTokenInCookies(res);
-    await generateTokenAndSetCookie(res, userId);
+    const { token, tokenExpiry } = await generateTokenAndSetCookie(res, userId);
+    return { token, tokenExpiry };
 }
 
 export { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime };

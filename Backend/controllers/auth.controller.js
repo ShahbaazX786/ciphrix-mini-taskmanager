@@ -20,11 +20,11 @@ const SignUp = async (req, res) => {
         const user = new User({ fullName, email, password: hashedPassword, otp, otpExpiryTime });
         await user.save();
 
-        generateTokenAndSetCookie(res, user._id, true);
+        const { token, tokenExpiry } = await generateTokenAndSetCookie(res, user._id, true);
         // await sendWelcomeEmail(fullName, email, otp);
 
         res.status(201).json({
-            success: true, message: "User Created Sucessfully",
+            success: true, message: "User Created Sucessfully", token, tokenExpiry
         })
 
     } catch (error) {
@@ -52,9 +52,9 @@ const SignIn = async (req, res) => {
             return res.status(404).json({ success: false, message: "Invalid Password" });
         }
 
-        generateTokenAndSetCookie(res, req._id);
+        const { token, tokenExpiry } = await generateTokenAndSetCookie(res, req._id);
         return res.status(200).json({
-            success: true, message: "User LoggedIn Sucessfully"
+            success: true, message: "User LoggedIn Sucessfully", token, tokenExpiry
         })
 
     } catch (error) {
@@ -88,8 +88,8 @@ const VerifyOTP = async (req, res) => {
         }
 
         await User.findByIdAndUpdate(userExists._id, { $set: { isVerified: true } })
-        await clearTempTokenWithValidToken(res, userExists._id);
-        return res.status(200).json({ success: true, message: "OTP Verified Sucessfully" });
+        const { token, tokenExpiry } = await clearTempTokenWithValidToken(res, userExists._id);
+        return res.status(200).json({ success: true, message: "OTP Verified Sucessfully", token, tokenExpiry });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
@@ -123,8 +123,8 @@ const getUser = async (req, res) => {
 
 const RefreshToken = async (req, res) => {
     try {
-        await generateTokenAndSetCookie(res, req.userId);
-        return res.status(200).json({ success: true, message: 'A new token is generated' })
+        const { token, tokenExpiry } = await generateTokenAndSetCookie(res, req.userId);
+        return res.status(200).json({ success: true, message: 'A new token is generated', token, tokenExpiry })
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
