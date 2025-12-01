@@ -8,7 +8,8 @@ const newTaskSchema = z.object({
   description: z
     .string({ error: "Description must be a textual string" })
     .min(5, { error: "Description must be at least 5 characters long" })
-    .max(30, { error: "Description must not exceed over 30 characters" }),
+    .max(30, { error: "Description must not exceed over 30 characters" })
+    .optional(),
   status: z
     .enum(["Pending", "Completed"], {
       error: "Invalid status Provided",
