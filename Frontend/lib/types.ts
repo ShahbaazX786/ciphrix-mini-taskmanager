@@ -1,16 +1,11 @@
+import z from "zod";
+import { signupFormSchema } from "./schema/user.schema";
+
 type ReactChildren = {
   children: React.ReactNode;
 };
 
-type signupPayload = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  confirmEmail: string;
-  password: string;
-  confirmPassword: string;
-};
-
+type signupPayload = z.infer<typeof signupFormSchema>;
 type loginPayload = Pick<signupPayload, "email" | "password">;
 
 type testimonial = {
@@ -32,5 +27,7 @@ type Task = {
   __V: number;
 };
 
+type mutationError = any;
+
 export type { loginPayload, ReactChildren, signupPayload, testimonial };
-export type { Task };
+export type { Task, mutationError };

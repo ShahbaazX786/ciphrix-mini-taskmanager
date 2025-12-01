@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Task } from "../types";
 
 interface TaskState {
-  tasks: [] | null;
+  tasks: Task[];
   setTasks: (tasks: Task[]) => void;
   selectedTask: Task | null;
   setSelectedTask: (task: Task | null) => void;
@@ -17,7 +17,7 @@ interface TaskState {
 
 export const useTaskStore = create<TaskState>((set) => ({
   tasks: [],
-  setTasks: (list: any) => set({ tasks: list }),
+  setTasks: (tasks: Task[]) => set({ tasks }),
   selectedTask: null,
   setSelectedTask: (task) => set({ selectedTask: task }),
 

@@ -5,6 +5,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { signUpUser } from "@/lib/api/api.auth";
 import { signupFormSchema } from "@/lib/schema/user.schema";
+import { mutationError } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -28,7 +29,7 @@ const SignupForm = () => {
         console.warn("Something went wrong i guess", res?.message);
       }
     },
-    onError: (err: any) => {
+    onError: (err: mutationError) => {
       console.warn("Error", err?.response?.data?.message);
     },
   });
