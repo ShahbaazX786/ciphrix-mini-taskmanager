@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/input-otp";
 import { verifyOTP } from "@/lib/api/api.auth";
 import { verifyOTPFormSchema } from "@/lib/schema/user.schema";
+import { useAuthStore } from "@/lib/store/auth.store";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import CountdownTimer from "./CountdownTimer";
 import { toast } from "sonner";
+import CountdownTimer from "./CountdownTimer";
 
 const VerifyOTPForm = () => {
+  const { setIsAuthenticated, setTokenExpiry } = useAuthStore();
   const router = useRouter();
 
   const otpForm = useForm<z.infer<typeof verifyOTPFormSchema>>({
@@ -32,6 +34,8 @@ const VerifyOTPForm = () => {
     mutationFn: (data: z.infer<typeof verifyOTPFormSchema>) => verifyOTP(data),
     onSuccess: (res) => {
       if (res?.success) {
+        setIsAuthenticated(true);
+        setTokenExpiry(res?.tokenExpiry);
         toast.success(res?.message, {
           richColors: true,
         });
@@ -47,6 +51,8 @@ const VerifyOTPForm = () => {
       toast.error(err?.response?.data?.message, {
         richColors: true,
       });
+      setIsAuthenticated(false);
+      setTokenExpiry(0);
       console.warn("Error", err?.response?.data?.message);
     },
   });

@@ -5,6 +5,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { loginUser } from "@/lib/api/api.auth";
 import { loginFormSchema } from "@/lib/schema/user.schema";
+import { useAuthStore } from "@/lib/store/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const LoginForm = () => {
+  const { setIsAuthenticated, setTokenExpiry } = useAuthStore();
   const router = useRouter();
   const formSchema = loginFormSchema;
   const loginForm = useForm<z.infer<typeof formSchema>>({
@@ -27,6 +29,8 @@ const LoginForm = () => {
     mutationFn: (data: z.infer<typeof formSchema>) => loginUser(data),
     onSuccess: (res) => {
       if (res?.success) {
+        setIsAuthenticated(true);
+        setTokenExpiry(res?.tokenExpiry);
         toast.success("User Logged In Successfully!", {
           richColors: true,
         });
@@ -45,6 +49,8 @@ const LoginForm = () => {
           richColors: true,
         }
       );
+      setIsAuthenticated(true);
+      setTokenExpiry(0);
       console.warn("Error", err?.response?.data?.message);
     },
   });

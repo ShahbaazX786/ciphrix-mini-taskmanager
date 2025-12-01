@@ -5,6 +5,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { signUpUser } from "@/lib/api/api.auth";
 import { signupFormSchema } from "@/lib/schema/user.schema";
+import { useAuthStore } from "@/lib/store/auth.store";
 import { mutationError } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -14,6 +15,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const SignupForm = () => {
+  const { setIsAuthenticated, setTokenExpiry } = useAuthStore();
   const router = useRouter();
   const formSchema = signupFormSchema;
   const signupForm = useForm<z.infer<typeof formSchema>>({
@@ -24,6 +26,8 @@ const SignupForm = () => {
     mutationFn: (data: z.infer<typeof formSchema>) => signUpUser(data),
     onSuccess: (res) => {
       if (res?.success) {
+        setIsAuthenticated(true);
+        setTokenExpiry(res?.tokenExpiry);
         toast.success(res?.message, {
           richColors: true,
         });
@@ -39,6 +43,8 @@ const SignupForm = () => {
       toast.error(err?.response?.data?.message, {
         richColors: true,
       });
+      setIsAuthenticated(false);
+      setTokenExpiry(0);
       console.warn("Server Error:", err?.response?.data?.message);
     },
   });
