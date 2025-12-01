@@ -1,12 +1,11 @@
 import { create } from "zustand";
+import { Task } from "../types";
 
 interface TaskState {
-  isSheetOpen: boolean;
-  openSheet: () => void;
-  closeSheet: () => void;
-
-  selectedTask: any | null;
-  setSelectedTask: (task: any | null) => void;
+  tasks: [] | null;
+  setTasks: (tasks: Task[]) => void;
+  selectedTask: Task | null;
+  setSelectedTask: (task: Task | null) => void;
 
   page: number;
   totalPages: number;
@@ -17,10 +16,8 @@ interface TaskState {
 }
 
 export const useTaskStore = create<TaskState>((set) => ({
-  isSheetOpen: false,
-  openSheet: () => set({ isSheetOpen: true }),
-  closeSheet: () => set({ isSheetOpen: false }),
-
+  tasks: [],
+  setTasks: (list: any) => set({ tasks: list }),
   selectedTask: null,
   setSelectedTask: (task) => set({ selectedTask: task }),
 
