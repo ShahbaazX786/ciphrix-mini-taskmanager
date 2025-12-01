@@ -77,10 +77,10 @@ const Tesimonials = () => {
                           {testimonial.userName}
                         </p>
                         <p className="flex justify-center items-center gap-2">
-                          <span className="text-xs bg-purple-600 rounded-full px-2 py-0.5">
+                          <span className="text-xs bg-purple-500 rounded-full px-2 py-0.5 text-white dark:text-black">
                             {testimonial.role}
                           </span>
-                          <span className="text-xs bg-pink-600 rounded-full px-2 py-0.5">
+                          <span className="text-xs bg-pink-500 rounded-full px-2 py-0.5 text-white dark:text-black">
                             {testimonial.company}
                           </span>
                         </p>
