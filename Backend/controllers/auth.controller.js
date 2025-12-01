@@ -121,5 +121,14 @@ const getUser = async (req, res) => {
     }
 }
 
-export { getAllUsers, getUser, SignIn, SignOut, SignUp, VerifyOTP };
+const RefreshToken = async (req, res) => {
+    try {
+        await generateTokenAndSetCookie(res, req.userId);
+        return res.status(200).json({ success: true, message: 'A new token is generated' })
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 
+}
+
+export { getAllUsers, getUser, RefreshToken, SignIn, SignOut, SignUp, VerifyOTP };
