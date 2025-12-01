@@ -34,4 +34,10 @@ const signupFormSchema = z
     message: "Passwords do not match",
   });
 
-export { loginFormSchema, signupFormSchema };
+const verifyOTPFormSchema = z.object({
+  otp: z.string().min(6, {
+    message: "Your one-time password must be 6 characters.",
+  }),
+});
+
+export { loginFormSchema, signupFormSchema, verifyOTPFormSchema };
