@@ -1,3 +1,5 @@
+import z from "zod";
+import { editTaskSchema, newTaskSchema } from "../schema/task.schema";
 import API from "./api.config";
 
 const fetchAllTasks = async (page: number, limit: number) => {
@@ -5,13 +7,13 @@ const fetchAllTasks = async (page: number, limit: number) => {
   return res.data;
 };
 
-const createTask = async (data: any) => {
+const createTask = async (data: z.infer<typeof newTaskSchema>) => {
   const res = await API.post("/task/create", data);
   return res.data;
 };
 
-const updateTask = async (data: any) => {
-  const res = await API.put("/task/create", data);
+const updateTask = async (id: string, data: z.infer<typeof editTaskSchema>) => {
+  const res = await API.put(`/task/${id}`, data);
   return res.data;
 };
 
@@ -25,4 +27,4 @@ const deleteAllTasks = async () => {
   return res.data;
 };
 
-export { fetchAllTasks, createTask, updateTask, deleteTask, deleteAllTasks };
+export { createTask, deleteAllTasks, deleteTask, fetchAllTasks, updateTask };
