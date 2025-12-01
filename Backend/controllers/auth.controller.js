@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
-import { clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime } from '../utils/helpers.js';
-import sendWelcomeEmail from '../utils/nodemailer/sendWelcomeEmail.js';
+import { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime } from '../utils/helpers.js';
 
 const SignUp = async (req, res) => {
     const { fullName, email, password } = req.body;
@@ -22,7 +21,7 @@ const SignUp = async (req, res) => {
         await user.save();
 
         generateTokenAndSetCookie(res, user._id, true);
-        await sendWelcomeEmail(fullName, email, otp);
+        // await sendWelcomeEmail(fullName, email, otp);
 
         res.status(201).json({
             success: true, message: "User Created Sucessfully",
@@ -73,7 +72,6 @@ const SignOut = async (_req, res) => {
 }
 
 const VerifyOTP = async (req, res) => {
-    console.log('yooooooo', req.user);
     const { otp } = req.body;
     if (!otp) {
         return res.status(404).json({ success: false, message: "Invalid email or OTP" });
@@ -90,6 +88,7 @@ const VerifyOTP = async (req, res) => {
         }
 
         await User.findByIdAndUpdate(userExists._id, { $set: { isVerified: true } })
+        await clearTempTokenWithValidToken(res, userExists._id);
         return res.status(200).json({ success: true, message: "OTP Verified Sucessfully" });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
