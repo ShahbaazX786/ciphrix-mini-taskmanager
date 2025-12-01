@@ -45,9 +45,11 @@ export interface TaskState {
 
 export interface AuthState {
   isAuthenticated: boolean;
+  isAdminUser: boolean;
   tokenExpiry: number;
 
   setIsAuthenticated: (flag: boolean) => void;
+  setIsAdminUser: (flag: boolean) => void;
   setTokenExpiry: (t: number) => void;
   logout: () => void;
 }
