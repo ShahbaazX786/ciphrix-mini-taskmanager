@@ -7,10 +7,12 @@ import { signUpUser } from "@/lib/api/api.auth";
 import { signupFormSchema } from "@/lib/schema/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const SignupForm = () => {
+  const router = useRouter();
   const formSchema = signupFormSchema;
   const signupForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -20,6 +22,7 @@ const SignupForm = () => {
     mutationFn: (data: z.infer<typeof formSchema>) => signUpUser(data),
     onSuccess: (res) => {
       if (res?.success) {
+        router.push("/verify-otp");
         console.warn("User Created Sucessfully");
       } else {
         console.warn("Something went wrong i guess", res?.message);
