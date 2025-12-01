@@ -3,13 +3,25 @@
 import DeleteAlert from "@/components/custom/delete-dialog";
 import { Button } from "@/components/ui/button";
 import useTasks from "@/lib/api/api.tasks.mutations";
+import { useTaskStore } from "@/lib/store/task.store";
 import { Plus, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import { columns } from "../components/columns";
 import { DataTable } from "../components/data-table";
-import TashSheet from "./components/taskSheet";
+import TaskSheet from "./components/taskSheet";
 
 const DashboardPage = () => {
   const { tasksQuery } = useTasks();
+  const { tasks, setTasks } = useTaskStore();
+
+  useEffect(() => {
+    if (tasksQuery.isSuccess && tasksQuery?.data?.taskList) {
+      setTasks(tasksQuery?.data?.taskList);
+    }
+  }, [tasksQuery.isSuccess, tasksQuery?.data, setTasks, tasks]);
+
+  if (tasksQuery.isLoading) return <p> Loading, Please Wait...</p>;
+  if (tasksQuery.isError) return <p>Error, Please try again.</p>;
 
   return (
     <section className="container mx-auto px-8 py-10 bg-gray-200 dark:bg-gray-800">
@@ -19,7 +31,7 @@ const DashboardPage = () => {
         </h1>
 
         <div className="flex justify-between items-center gap-2 my-2 mr-2">
-          <TashSheet
+          <TaskSheet
             mode={"new"}
             trigger={
               <Button
@@ -45,7 +57,7 @@ const DashboardPage = () => {
           />
         </div>
       </div>
-      <DataTable columns={columns} data={tasksQuery.data?.taskList ?? []} />
+      <DataTable columns={columns} data={tasks ?? []} />
     </section>
   );
 };
