@@ -16,6 +16,7 @@ import { verifyOTPFormSchema } from "@/lib/schema/user.schema";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import CountdownTimer from "./CountdownTimer";
+import { toast } from "sonner";
 
 const VerifyOTPForm = () => {
   const router = useRouter();
@@ -31,13 +32,21 @@ const VerifyOTPForm = () => {
     mutationFn: (data: z.infer<typeof verifyOTPFormSchema>) => verifyOTP(data),
     onSuccess: (res) => {
       if (res?.success) {
-        console.warn("User Verified Sucessfully");
+        toast.success(res?.message, {
+          richColors: true,
+        });
         router.push("/dashboard");
       } else {
+        toast.error(res?.message, {
+          richColors: true,
+        });
         console.warn("Something went wrong i guess", res?.message);
       }
     },
     onError: (err: any) => {
+      toast.error(err?.response?.data?.message, {
+        richColors: true,
+      });
       console.warn("Error", err?.response?.data?.message);
     },
   });

@@ -7,10 +7,13 @@ import { loginUser } from "@/lib/api/api.auth";
 import { loginFormSchema } from "@/lib/schema/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const LoginForm = () => {
+  const router = useRouter();
   const formSchema = loginFormSchema;
   const loginForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -24,12 +27,24 @@ const LoginForm = () => {
     mutationFn: (data: z.infer<typeof formSchema>) => loginUser(data),
     onSuccess: (res) => {
       if (res?.success) {
-        console.warn("User Logged In Sucessfully");
+        toast.success("User Logged In Successfully!", {
+          richColors: true,
+        });
+        router.push("/dashboard");
       } else {
-        console.warn("Something went wrong i guess", res?.message);
+        toast.error("Something went wrong!", {
+          richColors: true,
+        });
+        console.warn("Something went wrong:", res?.message);
       }
     },
     onError: (err: any) => {
+      toast.error(
+        err?.response?.data?.message || "Server Error, Please check the logs",
+        {
+          richColors: true,
+        }
+      );
       console.warn("Error", err?.response?.data?.message);
     },
   });

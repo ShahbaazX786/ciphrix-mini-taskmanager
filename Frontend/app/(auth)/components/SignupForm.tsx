@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const SignupForm = () => {
@@ -23,14 +24,22 @@ const SignupForm = () => {
     mutationFn: (data: z.infer<typeof formSchema>) => signUpUser(data),
     onSuccess: (res) => {
       if (res?.success) {
+        toast.success(res?.message, {
+          richColors: true,
+        });
         router.push("/verify-otp");
-        console.warn("User Created Sucessfully");
       } else {
-        console.warn("Something went wrong i guess", res?.message);
+        toast.error(res?.message, {
+          richColors: true,
+        });
+        console.warn("Something went wrong:", res?.message);
       }
     },
     onError: (err: mutationError) => {
-      console.warn("Error", err?.response?.data?.message);
+      toast.error(err?.response?.data?.message, {
+        richColors: true,
+      });
+      console.warn("Server Error:", err?.response?.data?.message);
     },
   });
 
