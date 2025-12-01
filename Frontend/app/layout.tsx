@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import TanStackQueryProvider from "@/lib/providers/tanstack-provider";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import type { Metadata } from "next";
@@ -37,6 +38,7 @@ export default function RootLayout({
         >
           <TanStackQueryProvider>{children}</TanStackQueryProvider>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
