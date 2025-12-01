@@ -79,7 +79,7 @@ const fetchAllTasks = async (req, res) => {
             const hasNext = skip + taskList.length < total;
             res.status(200).json({ success: true, page, limit, total, totalPages, hasNext, taskList });
         } else {
-            res.status(404).json({ success: false, message: "No Tasks Found" });
+            res.status(200).json({ success: true, message: "No Tasks Found", taskList: [] });
         }
 
     } catch (error) {
