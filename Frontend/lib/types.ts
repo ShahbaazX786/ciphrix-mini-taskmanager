@@ -43,5 +43,20 @@ export interface TaskState {
   setLimit: (l: number) => void;
 }
 
-export type { loginPayload, ReactChildren, signupPayload, testimonial };
-export type { Task, mutationError };
+export interface AuthState {
+  isAuthenticated: boolean;
+  tokenExpiry: number;
+
+  setIsAuthenticated: (flag: boolean) => void;
+  setTokenExpiry: (t: number) => void;
+  logout: () => void;
+}
+
+export type {
+  loginPayload,
+  mutationError,
+  ReactChildren,
+  signupPayload,
+  Task,
+  testimonial,
+};
