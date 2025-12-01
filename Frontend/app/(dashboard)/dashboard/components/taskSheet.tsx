@@ -21,73 +21,58 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import { createTask, updateTask } from "@/lib/api/api.task";
+import useTasks from "@/lib/api/api.tasks.mutations";
 import { editTaskSchema, newTaskSchema } from "@/lib/schema/task.schema";
 import { useTaskStore } from "@/lib/store/task.store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { JSX } from "react";
-import { useForm } from "react-hook-form";
+import { JSX, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 
-const TashSheet = ({
+const TaskSheet = ({
   trigger,
   mode,
 }: {
   trigger: JSX.Element;
   mode: "edit" | "new";
 }) => {
-  const { isSheetOpen, closeSheet, selectedTask } = useTaskStore();
+  const [open, setOpen] = useState(false);
+  const { selectedTask } = useTaskStore();
+  const { createTaskMutation, updateTaskMutation } = useTasks();
   const isEdit = mode === "edit";
   const taskSchema = isEdit ? editTaskSchema : newTaskSchema;
 
   const taskForm = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
-    defaultValues: selectedTask || {
-      title: "",
-      description: "",
-      status: "Pending",
-    },
-  });
-
-  const createTaskMutation = useMutation({
-    mutationFn: (data: z.infer<typeof taskSchema>) => createTask(data),
-    onSuccess: (res) => {
-      if (res?.success) {
-        console.warn("Task Created Sucessfully");
-      } else {
-        console.warn("Something went wrong i guess", res?.message);
-      }
-    },
-    onError: (err: any) => {
-      console.warn("Error", err?.response?.data?.message);
-    },
-  });
-
-  const updateTaskMutation = useMutation({
-    mutationFn: (data: z.infer<typeof taskSchema>) => updateTask(data),
-    onSuccess: (res) => {
-      if (res?.success) {
-        console.warn("Task Updated Sucessfully");
-      } else {
-        console.warn("Something went wrong i guess", res?.message);
-      }
-    },
-    onError: (err: any) => {
-      console.warn("Error", err?.response?.data?.message);
+    defaultValues: {
+      title: selectedTask?.title || "",
+      description: selectedTask?.description || "",
+      status: selectedTask?.status || "Pending",
     },
   });
 
   const onFormSubmit = (data: z.infer<typeof taskSchema>) => {
     if (mode === "edit") {
-      updateTaskMutation.mutate(data);
+      updateTaskMutation.mutate({ id: selectedTask!._id!, payload: data });
+      setOpen((prev) => (prev = !prev));
     } else {
       createTaskMutation.mutate(data);
+      setOpen((prev) => (prev = !prev));
     }
   };
 
+  useEffect(() => {
+    if (isEdit && selectedTask) {
+      taskForm.reset({
+        title: selectedTask.title,
+        description: selectedTask.description,
+        status: selectedTask.status,
+      });
+    }
+  }, [selectedTask]);
+
   return (
-    <Sheet open={isSheetOpen} onOpenChange={(open) => !open && closeSheet()}>
+    <Sheet open={open} onOpenChange={() => setOpen((prev) => (prev = !prev))}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent className="w-[80%] md:w-[540px] h-full overflow-y-auto">
         <form
@@ -130,23 +115,23 @@ const TashSheet = ({
                 </p>
               )}
             </Field>
-            <Field>
-              <FieldLabel htmlFor="status">Status</FieldLabel>
-              <Select {...taskForm.register("status")}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select task status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Pending">Pending</SelectItem>
-                  <SelectItem value="Completed">Completed</SelectItem>
-                </SelectContent>
-              </Select>
-              {taskForm.formState.errors.status && (
-                <p className="text-red-500 text-xs text-left">
-                  {taskForm.formState.errors.status.message}
-                </p>
-              )}
-            </Field>
+            {isEdit && (
+              <Controller
+                control={taskForm.control}
+                name="status"
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select task status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Pending">Pending</SelectItem>
+                      <SelectItem value="Completed">Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            )}
           </FieldGroup>
           <SheetFooter className="p-0 pb-4 pt-8 mt-auto">
             <Button type="submit" className="cursor-pointer">
@@ -164,4 +149,4 @@ const TashSheet = ({
   );
 };
 
-export default TashSheet;
+export default TaskSheet;
