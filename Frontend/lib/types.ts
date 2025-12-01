@@ -29,5 +29,19 @@ type Task = {
 
 type mutationError = any;
 
+export interface TaskState {
+  tasks: Task[];
+  setTasks: (tasks: Task[]) => void;
+  selectedTask: Task | null;
+  setSelectedTask: (task: Task | null) => void;
+
+  page: number;
+  totalPages: number;
+  limit: number;
+  setPage: (p: number) => void;
+  setTotalPages: (t: number) => void;
+  setLimit: (l: number) => void;
+}
+
 export type { loginPayload, ReactChildren, signupPayload, testimonial };
 export type { Task, mutationError };
