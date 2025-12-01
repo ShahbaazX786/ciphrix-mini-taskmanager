@@ -10,12 +10,12 @@ const getOTPExpiryTime = () => {
 
 const generateTokenAndSetCookie = async (res, userId, temp = false) => {
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-        expiresIn: temp ? "5m" : "7d"
+        expiresIn: temp ? "5m" : "15m"
     });
 
-    const expiresInMs = temp ? 5 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000;
+    const expiresInMs = temp ? 5 * 60 * 1000 : 15 * 60 * 1000;
 
-    res.cookie("token", token, {
+    res.cookie("tm-token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
@@ -27,7 +27,7 @@ const generateTokenAndSetCookie = async (res, userId, temp = false) => {
 }
 
 const clearTokenInCookies = async (res) => {
-    await res.clearCookie('token', {
+    await res.clearCookie('tm-token', {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
@@ -35,5 +35,10 @@ const clearTokenInCookies = async (res) => {
     });
 }
 
-export { clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime };
+const clearTempTokenWithValidToken = async (res, userId) => {
+    await clearTokenInCookies(res);
+    await generateTokenAndSetCookie(res, userId);
+}
+
+export { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime };
 
