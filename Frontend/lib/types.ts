@@ -22,4 +22,15 @@ type testimonial = {
   rating: number;
 };
 
+type Task = {
+  _id: string;
+  title: string;
+  description: string;
+  status: "Pending" | "Completed";
+  createdAt: string;
+  updatedAt: string;
+  __V: number;
+};
+
 export type { loginPayload, ReactChildren, signupPayload, testimonial };
+export type { Task };

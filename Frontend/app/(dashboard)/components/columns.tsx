@@ -3,20 +3,12 @@
 import DeleteAlert from "@/components/custom/delete-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTaskStore } from "@/lib/store/task.store";
+import { Task } from "@/lib/types";
 import { getFormattedDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash } from "lucide-react";
-import TashSheet from "../dashboard/components/taskSheet";
-
-export type Task = {
-  _id: string;
-  title: string;
-  description: string;
-  status: "Pending" | "Completed";
-  createdAt: string;
-  updatedAt: string;
-  __V: number;
-};
+import TaskSheet from "../dashboard/components/taskSheet";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -65,12 +57,18 @@ export const columns: ColumnDef<Task>[] = [
 
 export const ActionButtons = ({ row }: { row: any }) => {
   const id = row?.original?._id;
+  const { setSelectedTask } = useTaskStore();
+
   return (
     <section id={id} className="flex flex-row justify-start items-start gap-2">
-      <TashSheet
+      <TaskSheet
         mode={"edit"}
         trigger={
-          <Button variant={"default"} className="cursor-pointer">
+          <Button
+            onClick={() => setSelectedTask(row?.original)}
+            variant={"default"}
+            className="cursor-pointer"
+          >
             <Edit />
           </Button>
         }
