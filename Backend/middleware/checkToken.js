@@ -3,7 +3,7 @@ import User from '../models/user.model.js';
 
 export const checkToken = async (req, res, next) => {
     try {
-        const token = req.cookies?.token;
+        const token = req.cookies?.['tm-token'];
 
         if (!token) return res.status(401).json({ message: 'Unauthorized Access - No Valid Token was Found' });
 
