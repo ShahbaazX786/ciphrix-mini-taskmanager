@@ -7,30 +7,22 @@ import { connectDB } from './utils/ConnectDB.js';
 import './utils/dotenvConfig.js';
 
 const app = express();
+const PORT = process.env.PORT || 7200;
 
 // middlewares
-app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
+app.use(cors({ origin: process.env.ORIGIN, credentials: true }))
 app.use(express.json());
-app.use(cookieParser());
-
-// Routes
-app.get('/api/status', (_req, res) => res.send('Server is up and Running'));
+app.use(cookieParser())
 app.use('/api/auth', authRoutes);
 app.use('/api/task', taskRoutes);
 
-// Lazy DB connect
-let isConnected = false;
-
-async function ensureDB() {
-    if (!isConnected) {
-        await connectDB();
-        isConnected = true;
-    }
-}
-
-app.use(async (_req, _res, next) => {
-    await ensureDB();
-    next();
+// Initial Route
+app.get('/', (_req, res) => {
+    res.send('Server is up and running');
 });
 
-export default app;
+
+app.listen(PORT, async () => {
+    await connectDB();
+    console.log(`Server is running on port ${PORT}`);
+})
