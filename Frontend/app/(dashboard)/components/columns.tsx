@@ -1,15 +1,15 @@
 "use client";
 
 import DeleteAlert from "@/components/custom/delete-dialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTaskStore } from "@/lib/store/task.store";
 import { Task } from "@/lib/types";
-import { cn, getFormattedDate } from "@/lib/utils";
+import { cn, getFormattedDate, TableSortingFunction } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit, Trash } from "lucide-react";
+import { ArrowUpDown, Edit, Trash } from "lucide-react";
 import TaskSheet from "../dashboard/components/taskSheet";
-import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -34,15 +34,23 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "title",
-    header: "Title",
+    header: ({ column }) => <SortingHeader column={column} header={"Title"} />,
+    sortingFn: (rowA, rowB, columnId) =>
+      TableSortingFunction(rowA, rowB, columnId),
   },
   {
     accessorKey: "description",
-    header: "Description",
+    header: ({ column }) => (
+      <SortingHeader column={column} header={"Description"} />
+    ),
+    sortingFn: (rowA, rowB, columnId) =>
+      TableSortingFunction(rowA, rowB, columnId),
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => <SortingHeader column={column} header={"Status"} />,
+    sortingFn: (rowA, rowB, columnId) =>
+      TableSortingFunction(rowA, rowB, columnId),
     cell: ({ row }) => {
       const status = row?.original?.status;
       return (
@@ -59,7 +67,11 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Created Date",
+    header: ({ column }) => (
+      <SortingHeader column={column} header={"Created Date"} />
+    ),
+    sortingFn: (rowA, rowB, columnId) =>
+      TableSortingFunction(rowA, rowB, columnId),
     cell: ({ row }) => getFormattedDate(row.original.createdAt),
   },
   {
@@ -69,6 +81,7 @@ export const columns: ColumnDef<Task>[] = [
   },
 ];
 
+// Table Helper methods.
 export const ActionButtons = ({ row }: { row: any }) => {
   const id = row?.original?._id;
   const { setSelectedTask } = useTaskStore();
@@ -97,5 +110,24 @@ export const ActionButtons = ({ row }: { row: any }) => {
         }
       />
     </section>
+  );
+};
+
+export const SortingHeader = ({
+  column,
+  header,
+}: {
+  column: any;
+  header: string;
+}) => {
+  return (
+    <Button
+      className="group"
+      variant="ghost"
+      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    >
+      {header}
+      <ArrowUpDown className="ml-2 h-4 w-4 invisible group-hover:visible" />
+    </Button>
   );
 };

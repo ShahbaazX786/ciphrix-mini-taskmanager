@@ -4,11 +4,11 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import Paginator from "@/components/custom/paginator";
+import { useTaskStore } from "@/lib/store/task.store";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,16 +30,33 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const { page, totalPages, setPage, limit } = useTaskStore();
 
   const table = useReactTable({
     data,
     columns,
-    getPaginationRowModel: getPaginationRowModel(),
-    getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
+    manualPagination: true,
+    pageCount: totalPages,
     state: {
+      sorting,
+      pagination: {
+        pageIndex: page - 1,
+        pageSize: limit,
+      },
       rowSelection,
     },
+    onPaginationChange: (updater) => {
+      const next =
+        typeof updater === "function"
+          ? updater({ pageIndex: page - 1, pageSize: limit })
+          : updater;
+      setPage(next.pageIndex + 1);
+    },
+    onSortingChange: setSorting,
+    onRowSelectionChange: setRowSelection,
+    getSortedRowModel: getSortedRowModel(),
+    getCoreRowModel: getCoreRowModel(),
   });
 
   return (
@@ -95,7 +112,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className="flex items-center justify-center space-x-2 py-4">
-        <Paginator />
+        {/* <Paginator /> */}
       </div>
       {table.getFilteredSelectedRowModel().rows.length > 0 && (
         <div className="text-muted-foreground flex-1 text-sm mt-4">

@@ -40,3 +40,19 @@ export const getFormattedDate = (timestamp: string) => {
 
   return `${day} ${monthName} ${year}, ${hours}:${minutes} ${ampm}`;
 };
+
+export const TableSortingFunction = (
+  rowA: any,
+  rowB: any,
+  columnId: any
+): any => {
+  const a = rowA.getValue(columnId) as string;
+  const b = rowB.getValue(columnId) as string;
+
+  const numA = parseInt(a.match(/\d+/)?.[0] || "0");
+  const numB = parseInt(b.match(/\d+/)?.[0] || "0");
+
+  if (numA !== numB) return numA - numB;
+
+  return a.localeCompare(b);
+};
