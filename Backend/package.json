@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Backend Server for Note Managing Application",
   "main": "server.js",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "s": "nodemon backend/server.js",
     "start": "node server.js",
