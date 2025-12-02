@@ -54,11 +54,22 @@ export interface AuthState {
   logout: () => void;
 }
 
+type taskQueryResponse = {
+  hasNext: boolean;
+  limit: number;
+  page: number;
+  success: boolean;
+  taskList: Task[];
+  total: number;
+  totalPages: number;
+};
+
 export type {
   loginPayload,
   mutationError,
   ReactChildren,
   signupPayload,
   Task,
+  taskQueryResponse,
   testimonial,
 };
