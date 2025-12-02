@@ -3,7 +3,7 @@
 import DeleteAlert from "@/components/custom/delete-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useAuthStore } from "@/lib/store/auth.store";
 import { useTaskStore } from "@/lib/store/task.store";
 import { Task } from "@/lib/types";
 import { cn, getFormattedDate, TableSortingFunction } from "@/lib/utils";
@@ -12,26 +12,27 @@ import { ArrowUpDown, Edit, Trash } from "lucide-react";
 import TaskSheet from "../dashboard/components/taskSheet";
 
 export const columns: ColumnDef<Task>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-  },
+  // Disabling multi - select for now.
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  // },
   {
     accessorKey: "title",
     header: ({ column }) => <SortingHeader column={column} header={"Title"} />,
@@ -76,7 +77,7 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: "actions",
-    header: "Task Actions",
+    header: "Task Action",
     cell: ({ row }) => <ActionButtons row={row} />,
   },
 ];
@@ -85,7 +86,7 @@ export const columns: ColumnDef<Task>[] = [
 export const ActionButtons = ({ row }: { row: any }) => {
   const id = row?.original?._id;
   const { setSelectedTask } = useTaskStore();
-
+  const { user } = useAuthStore();
   return (
     <section id={id} className="flex flex-row justify-start items-start gap-2">
       <TaskSheet
@@ -101,14 +102,16 @@ export const ActionButtons = ({ row }: { row: any }) => {
         }
       />
 
-      <DeleteAlert
-        id={id}
-        trigger={
-          <Button variant={"destructive"} className="cursor-pointer">
-            <Trash />
-          </Button>
-        }
-      />
+      {user?.role === "admin" && (
+        <DeleteAlert
+          id={id}
+          trigger={
+            <Button variant={"destructive"} className="cursor-pointer">
+              <Trash />
+            </Button>
+          }
+        />
+      )}
     </section>
   );
 };

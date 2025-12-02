@@ -11,8 +11,6 @@ const Header = ({ hideAuthButtons }: { hideAuthButtons: boolean }) => {
   const isUserValid = user?.email;
   const showAuthButtons = !isUserValid && !hideAuthButtons;
 
-  console.log(user);
-
   return (
     <header className="px-4 py-2 flex justify-between shadow-sm bg-zinc-50 dark:bg-gray-900">
       <Link
@@ -36,7 +34,7 @@ const Header = ({ hideAuthButtons }: { hideAuthButtons: boolean }) => {
           </Link>
         )}
 
-        {isUserValid && <UserAvatar role={user?.role} />}
+        {isUserValid && <UserAvatar user={user} />}
         <ThemeTogglerButton />
       </div>
     </header>

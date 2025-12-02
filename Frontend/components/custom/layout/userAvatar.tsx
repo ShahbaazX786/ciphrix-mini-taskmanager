@@ -13,12 +13,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { logoutUser } from "@/lib/api/api.auth";
 import { useAuthStore } from "@/lib/store/auth.store";
-import { userRole } from "@/lib/types";
+import { userResponseState } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const UserAvatar = ({ role }: { role: userRole }) => {
+const UserAvatar = ({ user }: { user: userResponseState }) => {
   const { setSessionState, setUserState } = useAuthStore();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ const UserAvatar = ({ role }: { role: userRole }) => {
       toast.loading("Logging Out...", { richColors: true });
     },
     onSuccess: () => {
-      setUserState(null, "user");
+      setUserState(null, null, "user");
       setSessionState(0, 0);
       toast.dismiss();
       toast.success("User Logged Out Successfully", { richColors: true });
@@ -40,6 +40,11 @@ const UserAvatar = ({ role }: { role: userRole }) => {
     logOutMutation.mutate();
   };
 
+  const getInitials = (str: string) => {
+    const [w1, w2] = str.trim().split(" ");
+    return w1[0].toUpperCase() + w2[0].toUpperCase();
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -47,7 +52,7 @@ const UserAvatar = ({ role }: { role: userRole }) => {
           variant="outline"
           className="w-9 h-9 rounded-full bg-pink-200 cursor-pointer hover:bg-purple-300"
         >
-          JT
+          {getInitials(user?.fullName || "")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
@@ -55,9 +60,9 @@ const UserAvatar = ({ role }: { role: userRole }) => {
         <DropdownMenuGroup>
           <DropdownMenuItem disabled className="flex justify-between">
             Edit Profile
-            {role && (
+            {user?.role && (
               <Badge className="text-black dark:text-white bg-linear-to-b from-purple-500 to-pink-500 capitalize">
-                {role}
+                {user?.role}
               </Badge>
             )}
           </DropdownMenuItem>

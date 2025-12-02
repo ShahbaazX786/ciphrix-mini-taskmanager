@@ -34,7 +34,7 @@ const LoginForm = () => {
     },
     onSuccess: (res: loginResponse) => {
       if (res?.success) {
-        setUserState(res?.user?.email, res?.user?.role);
+        setUserState(res?.user?.fullName, res?.user?.email, res?.user?.role);
         setSessionState(res?.tokenExpiry, res?.tokenExpiry);
 
         toast.dismiss();
@@ -45,7 +45,7 @@ const LoginForm = () => {
       }
     },
     onError: (err: mutationError) => {
-      setUserState(null, "user");
+      setUserState(null, null, "user");
       setSessionState(0, 0);
 
       toast.dismiss();

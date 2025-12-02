@@ -46,7 +46,11 @@ export interface AuthState {
   user: UserState;
   session: SessionState;
 
-  setUserState: (email: string | null, role: userRole) => void;
+  setUserState: (
+    fullName: string | null,
+    email: string | null,
+    role: userRole
+  ) => void;
   setSessionState: (te: number, tw: number) => void;
   logout: () => void;
 }
@@ -62,15 +66,12 @@ type taskQueryResponse = {
 };
 
 type userResponseState = {
-  fullName: string;
+  fullName: string | null;
   email: string | null;
   role: userRole;
 };
 
-type UserState = {
-  email: string | null;
-  role: userRole;
-};
+type UserState = userResponseState;
 
 type SessionState = {
   tokenExpiry: number;
@@ -104,4 +105,5 @@ export type {
   testimonial,
   UserState,
   userRole,
+  userResponseState,
 };

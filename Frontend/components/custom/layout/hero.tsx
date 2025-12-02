@@ -1,11 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/lib/store/auth.store";
 import Link from "next/link";
 import Typewriter from "typewriter-effect";
 
 const Hero = () => {
-  const isSignedIn = true;
+  const { user } = useAuthStore();
 
   return (
     <section id="hero">
@@ -39,12 +40,12 @@ const Hero = () => {
           Plan
         </p>
         <div>
-          <Link href={isSignedIn ? "/dashboard" : "/signup"}>
+          <Link href={user?.email ? "/dashboard" : "/signup"}>
             <Button
               variant={"premium"}
               className="md:text-lg p-4 md:p-6 rounded-full font-semibold cursor-pointer hover:rotate-1 hover:scale-105"
             >
-              Start For Free Now!
+              {user?.email ? "Go to Dashboard" : "Start For Free Now!"}
             </Button>
           </Link>
         </div>
