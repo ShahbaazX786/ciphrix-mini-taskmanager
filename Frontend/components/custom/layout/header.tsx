@@ -1,13 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/lib/store/auth.store";
 import Link from "next/link";
 import ThemeTogglerButton from "../theme-toggler";
-import { useAuthStore } from "@/lib/store/auth.store";
+import UserAvatar from "./userAvatar";
 
 const Header = ({ hideAuthButtons }: { hideAuthButtons: boolean }) => {
-  const { isAuthenticated } = useAuthStore();
-  const showAuthButtons = !isAuthenticated && !hideAuthButtons;
+  const { user } = useAuthStore();
+  const isUserValid = user?.email;
+  const showAuthButtons = !isUserValid && !hideAuthButtons;
+
+  console.log(user);
 
   return (
     <header className="px-4 py-2 flex justify-between shadow-sm bg-zinc-50 dark:bg-gray-900">
@@ -32,6 +36,7 @@ const Header = ({ hideAuthButtons }: { hideAuthButtons: boolean }) => {
           </Link>
         )}
 
+        {isUserValid && <UserAvatar role={user?.role} />}
         <ThemeTogglerButton />
       </div>
     </header>
