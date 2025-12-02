@@ -6,14 +6,14 @@ const checkValidSession = (req: NextRequest) => {
 
   const isAuth = !!token;
 
-  const AuthPages = ["/login", "/signup"];
+  const AuthPages = ["/login", "/signup", "/verify-otp"];
   const isAuthPage = AuthPages.includes(req.nextUrl.pathname);
 
   if (isAuth && isAuthPage) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  const protectedRoutes = ["/dashboard"];
+  const protectedRoutes = ["/dashboard", "/verify-otp"];
   const isProtectedRoute = protectedRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
@@ -25,7 +25,7 @@ const checkValidSession = (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/login", "/signup", "/dashboard/:path*"],
+  matcher: ["/login", "/signup", "/dashboard/:path*", "/verify-otp"],
 };
 
 export default checkValidSession;
