@@ -71,9 +71,14 @@ const useTaskQuery = () => {
 
   const deleteTaskMutation = useMutation({
     mutationFn: async (id: string) => {
-      return await deleteTask(id);
+      const result = await deleteTask(id);
+      return result;
+    },
+    onMutate: () => {
+      toast.loading("Deleting task...");
     },
     onSuccess: () => {
+      toast.dismiss();
       toast.success("Task deleted successfully!");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
