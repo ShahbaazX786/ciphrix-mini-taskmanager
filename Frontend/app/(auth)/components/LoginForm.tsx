@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { loginUser } from "@/lib/api/api.auth";
 import { loginFormSchema } from "@/lib/schema/user.schema";
 import { useAuthStore } from "@/lib/store/auth.store";
+import { loginResponse, mutationError } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -14,9 +15,10 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const LoginForm = () => {
-  const { setIsAuthenticated, setTokenExpiry } = useAuthStore();
   const router = useRouter();
   const formSchema = loginFormSchema;
+  const { setUserState, setSessionState } = useAuthStore();
+
   const loginForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,30 +29,32 @@ const LoginForm = () => {
 
   const loginMutation = useMutation({
     mutationFn: (data: z.infer<typeof formSchema>) => loginUser(data),
-    onSuccess: (res) => {
+    onMutate: () => {
+      toast.loading("Logging In...");
+    },
+    onSuccess: (res: loginResponse) => {
       if (res?.success) {
-        setIsAuthenticated(true);
-        setTokenExpiry(res?.tokenExpiry);
+        setUserState(res?.user?.email, res?.user?.role);
+        setSessionState(res?.tokenExpiry, res?.tokenExpiry);
+
+        toast.dismiss();
         toast.success("User Logged In Successfully!", {
           richColors: true,
         });
         router.push("/dashboard");
-      } else {
-        toast.error("Something went wrong!", {
-          richColors: true,
-        });
-        console.warn("Something went wrong:", res?.message);
       }
     },
-    onError: (err: any) => {
+    onError: (err: mutationError) => {
+      setUserState(null, "user");
+      setSessionState(0, 0);
+
+      toast.dismiss();
       toast.error(
         err?.response?.data?.message || "Server Error, Please check the logs",
         {
           richColors: true,
         }
       );
-      setIsAuthenticated(true);
-      setTokenExpiry(0);
       console.warn("Error", err?.response?.data?.message);
     },
   });
