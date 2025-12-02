@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
-import { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime, getUserDetail } from '../utils/helpers.js';
+import { clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime, getUserDetail } from '../utils/helpers.js';
 
 const SignUp = async (req, res) => {
     const { fullName, email, password } = req.body;
@@ -89,8 +89,9 @@ const VerifyOTP = async (req, res) => {
         }
 
         await User.findByIdAndUpdate(userExists._id, { $set: { isVerified: true } })
-        const { token, tokenExpiry } = await clearTempTokenWithValidToken(res, userExists._id);
-        return res.status(200).json({ success: true, message: "OTP Verified Sucessfully", token, tokenExpiry });
+        await clearTokenInCookies(res);
+        // const { token, tokenExpiry } = await clearTempTokenWithValidToken(res, userExists._id);
+        return res.status(200).json({ success: true, message: "OTP Verified Sucessfully" });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
