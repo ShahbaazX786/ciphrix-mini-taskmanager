@@ -4,10 +4,9 @@ import cors from 'cors';
 import express from 'express';
 import authRoutes from './routes/auth.routes.js';
 import taskRoutes from './routes/task.routes.js';
-import { connectDB } from './utils/ConnectDB.js';
 
 const app = express();
-const PORT = process.env.PORT || 7200;
+const server = http.createServer(app);
 
 // middlewares
 app.use(cors({ origin: process.env.ORIGIN, credentials: true }))
@@ -21,8 +20,14 @@ app.get('/', (_req, res) => {
     res.send('Server is up and running');
 });
 
+// DB Connection
+await connectDB();
 
-app.listen(PORT, async () => {
-    await connectDB();
-    console.log(`Server is running on port ${PORT}`);
-})
+// Env Checking and local app Startup.
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 7200;
+    server.listen(PORT, () => { console.log(`Server is running on port ${PORT}`); })
+}
+
+// Otherwise vercel will reuse the server and listen to it itself.
+export default server;
