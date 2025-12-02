@@ -1,9 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { fetchAllTasks } from "@/lib/api/api.task";
 import { useTaskStore } from "@/lib/store/task.store";
-import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { columns } from "../components/columns";
 import { DataTable } from "../components/data-table";
@@ -11,15 +9,11 @@ import EmptyDashboard from "./components/emptyDashboard";
 import TaskSheet from "./components/taskSheet";
 
 const DashboardPage = () => {
-  const { page, limit } = useTaskStore();
-  const { data } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => fetchAllTasks(page, limit),
-  });
+  const { tasks } = useTaskStore();
 
   return (
-    <section className="px-8 py-10 bg-gray-200 dark:bg-gray-800 h-screen">
-      {data && data?.taskList.length > 0 ? (
+    <section className="px-8 py-10 bg-gray-200 dark:bg-gray-800 h-full">
+      {tasks && tasks?.length > 0 ? (
         <>
           <div className="flex flex-row justify-between items-center">
             <h1 className="text-2xl font-bold mb-2">
@@ -53,7 +47,7 @@ const DashboardPage = () => {
               /> */}
             </div>
           </div>
-          <DataTable columns={columns} data={data?.taskList || []} />
+          <DataTable columns={columns} data={tasks ?? []} />
         </>
       ) : (
         <EmptyDashboard />

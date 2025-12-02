@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import { useTaskStore } from "@/lib/store/task.store";
+import Paginator from "@/components/custom/paginator";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -111,8 +112,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-center space-x-2 py-4">
-        {/* <Paginator /> */}
+      <div className="flex items-center justify-center space-x-2 py-4 my-10">
+        <Paginator />
       </div>
       {table.getFilteredSelectedRowModel().rows.length > 0 && (
         <div className="text-muted-foreground flex-1 text-sm mt-4">

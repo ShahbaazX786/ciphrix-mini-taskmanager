@@ -1,20 +1,20 @@
 import { useTaskStore } from "@/lib/store/task.store";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Button } from "../ui/button";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "../ui/pagination";
 
 const Paginator = () => {
-  const { page, setPage, totalPages } = useTaskStore();
+  const { page, totalPages, setPage } = useTaskStore();
+
   const handlePrev = () => {
     if (page > 1) setPage(page - 1);
   };
-
   const handleNext = () => {
     if (page < totalPages) setPage(page + 1);
   };
@@ -23,12 +23,26 @@ const Paginator = () => {
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href="#" onClick={handlePrev} />
+          <Button
+            className="cursor-pointer"
+            variant={"ghost"}
+            onClick={handlePrev}
+            disabled={page === 1}
+          >
+            <ArrowLeft />
+            Previous
+          </Button>
         </PaginationItem>
         {[...Array(totalPages)].map((_, i) => {
           return (
             <PaginationItem key={i + 1}>
-              <PaginationLink href="#">{i + 1}</PaginationLink>
+              <PaginationLink
+                href="#"
+                onClick={() => setPage(i + 1)}
+                className={page === i + 1 ? "bg-primary text-white" : ""}
+              >
+                {i + 1}
+              </PaginationLink>
             </PaginationItem>
           );
         })}
@@ -38,7 +52,14 @@ const Paginator = () => {
           </PaginationItem>
         )}
         <PaginationItem>
-          <PaginationNext href="#" onClick={handleNext} />
+          <Button
+            className="cursor-pointer"
+            variant={"ghost"}
+            onClick={handleNext}
+            disabled={page === totalPages}
+          >
+            Next <ArrowRight />
+          </Button>
         </PaginationItem>
       </PaginationContent>
     </Pagination>
