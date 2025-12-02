@@ -46,7 +46,7 @@ export interface AuthState {
   user: UserState;
   session: SessionState;
 
-  setUserState: (e: string | null, r: "user" | "admin") => void;
+  setUserState: (email: string | null, role: userRole) => void;
   setSessionState: (te: number, tw: number) => void;
   logout: () => void;
 }
@@ -64,12 +64,12 @@ type taskQueryResponse = {
 type userResponseState = {
   fullName: string;
   email: string | null;
-  role: "user" | "admin";
+  role: userRole;
 };
 
 type UserState = {
   email: string | null;
-  role: "user" | "admin";
+  role: userRole;
 };
 
 type SessionState = {
@@ -90,16 +90,18 @@ type authResponse = {
 };
 
 type loginResponse = authResponse;
+type userRole = "user" | "admin";
 
 export type {
-  SessionState,
-  UserState,
   loginPayload,
+  loginResponse,
   mutationError,
   ReactChildren,
+  SessionState,
   signupPayload,
   Task,
   taskQueryResponse,
   testimonial,
-  loginResponse,
+  UserState,
+  userRole,
 };
