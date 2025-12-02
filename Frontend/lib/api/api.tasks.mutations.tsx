@@ -13,7 +13,7 @@ const useTaskQuery = () => {
   const { page, limit, setPage, setTotalPages, setTasks } = useTaskStore();
 
   const taskQuery = useQuery({
-    queryKey: ["tasks"],
+    queryKey: ["tasks", page, limit],
     queryFn: async (): Promise<taskQueryResponse> => {
       const data: taskQueryResponse = await fetchAllTasks(page, limit);
       if (data?.success) {
