@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
-import { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime } from '../utils/helpers.js';
+import { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime, getUserDetail } from '../utils/helpers.js';
 
 const SignUp = async (req, res) => {
     const { fullName, email, password } = req.body;
@@ -52,9 +52,10 @@ const SignIn = async (req, res) => {
             return res.status(404).json({ success: false, message: "Invalid Password" });
         }
 
-        const { token, tokenExpiry } = await generateTokenAndSetCookie(res, req._id);
+        const { token, tokenExpiry } = await generateTokenAndSetCookie(res, user._id);
+        const userDetail = getUserDetail(user);
         return res.status(200).json({
-            success: true, message: "User LoggedIn Sucessfully", token, tokenExpiry
+            success: true, message: "User LoggedIn Sucessfully", token, tokenExpiry, user: userDetail
         })
 
     } catch (error) {

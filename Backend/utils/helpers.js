@@ -42,5 +42,10 @@ const clearTempTokenWithValidToken = async (res, userId) => {
     return { token, tokenExpiry };
 }
 
-export { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime };
+const getUserDetail = (user) => {
+    const { fullName, email, role } = user;
+    return { fullName, email, role }
+}
+
+export { clearTempTokenWithValidToken, clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime, getUserDetail };
 
