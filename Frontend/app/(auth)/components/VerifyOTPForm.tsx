@@ -37,6 +37,7 @@ const VerifyOTPForm = () => {
     },
     onSuccess: (res: verifyOTPResponse) => {
       if (res?.success) {
+        setOpen(true);
         toast.dismiss();
         toast.success(res?.message, {
           richColors: true,

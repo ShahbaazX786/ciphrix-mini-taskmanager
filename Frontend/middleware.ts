@@ -25,7 +25,7 @@ const checkValidSession = (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/login", "/signup", "/dashboard/:path*", "/verify-otp"],
+  matcher: ["/login", "/signup", "/dashboard/:path*"],
 };
 
 export default checkValidSession;

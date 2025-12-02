@@ -21,7 +21,7 @@ const SignupSuccessDialog = ({
 }) => {
   const router = useRouter();
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Account Verified!</DialogTitle>
