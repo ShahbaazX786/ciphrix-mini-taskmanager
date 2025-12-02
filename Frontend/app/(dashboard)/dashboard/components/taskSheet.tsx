@@ -21,7 +21,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import useTasks from "@/lib/api/api.tasks.mutations";
+import useTaskQuery from "@/lib/api/api.tasks.mutations";
 import { editTaskSchema, newTaskSchema } from "@/lib/schema/task.schema";
 import { useTaskStore } from "@/lib/store/task.store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,27 +37,41 @@ const TaskSheet = ({
   mode: "edit" | "new";
 }) => {
   const [open, setOpen] = useState(false);
-  const { selectedTask } = useTaskStore();
-  const { createTaskMutation, updateTaskMutation } = useTasks();
+  const { selectedTask, setSelectedTask } = useTaskStore();
+  const { createTaskMutation, updateTaskMutation } = useTaskQuery();
+
   const isEdit = mode === "edit";
   const taskSchema = isEdit ? editTaskSchema : newTaskSchema;
 
   const taskForm = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
-      title: selectedTask?.title || "",
-      description: selectedTask?.description || "",
-      status: selectedTask?.status || "Pending",
-    },
+    defaultValues: isEdit
+      ? {
+          title: selectedTask?.title,
+          description: selectedTask?.description,
+          status: selectedTask?.status,
+        }
+      : {
+          title: "",
+          description: "",
+          status: "Pending",
+        },
   });
 
   const onFormSubmit = (data: z.infer<typeof taskSchema>) => {
-    if (mode === "edit") {
-      updateTaskMutation.mutate({ id: selectedTask!._id!, payload: data });
-      setOpen((prev) => (prev = !prev));
+    if (isEdit) {
+      updateTaskMutation.mutate({
+        id: selectedTask?._id as string,
+        payload: data as z.infer<typeof editTaskSchema>,
+      });
+      setSelectedTask(null);
+      setOpen(false);
+      taskForm.reset();
     } else {
-      createTaskMutation.mutate(data);
-      setOpen((prev) => (prev = !prev));
+      createTaskMutation.mutate(data as z.infer<typeof newTaskSchema>);
+      setSelectedTask(null);
+      setOpen(false);
+      taskForm.reset();
     }
   };
 
@@ -72,7 +86,7 @@ const TaskSheet = ({
   }, [selectedTask]);
 
   return (
-    <Sheet open={open} onOpenChange={() => setOpen((prev) => (prev = !prev))}>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent className="w-[80%] md:w-[540px] h-full overflow-y-auto">
         <form
