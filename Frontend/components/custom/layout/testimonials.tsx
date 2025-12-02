@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -77,12 +78,10 @@ const Tesimonials = () => {
                           {testimonial.userName}
                         </p>
                         <p className="flex justify-center items-center gap-2">
-                          <span className="text-xs bg-purple-500 rounded-full px-2 py-0.5 text-white dark:text-black">
-                            {testimonial.role}
-                          </span>
-                          <span className="text-xs bg-pink-500 rounded-full px-2 py-0.5 text-white dark:text-black">
-                            {testimonial.company}
-                          </span>
+                          <Badge variant={"default"}>{testimonial.role}</Badge>
+                          <Badge variant={"destructive"}>
+                            {testimonial.company}{" "}
+                          </Badge>
                         </p>
                       </div>
                     </div>
