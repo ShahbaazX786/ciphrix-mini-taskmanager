@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTaskStore } from "@/lib/store/task.store";
 import { Task } from "@/lib/types";
-import { getFormattedDate } from "@/lib/utils";
+import { cn, getFormattedDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash } from "lucide-react";
 import TaskSheet from "../dashboard/components/taskSheet";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -42,6 +43,19 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "status",
     header: "Status",
+    cell: ({ row }) => {
+      const status = row?.original?.status;
+      return (
+        <Badge
+          className={cn(
+            status === "Completed" ? "bg-green-500" : "bg-yellow-500",
+            "text-white"
+          )}
+        >
+          {status}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: "createdAt",
