@@ -10,6 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 7200;
 
 // middlewares
+await connectDB();
 app.use(cors({ origin: process.env.ORIGIN, credentials: true }))
 app.use(express.json());
 app.use(cookieParser())
@@ -23,6 +24,5 @@ app.get('/', (_req, res) => {
 
 
 app.listen(PORT, async () => {
-    await connectDB();
     console.log(`Server is running on port ${PORT}`);
 })
