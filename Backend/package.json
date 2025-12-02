@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend Server for Note Managing Application",
-  "main": "server.js",
+  "main": "/Backend/api/index.js",
   "scripts": {
-    "start": "node server.js",
-    "s": "cls && nodemon backend/server.js",
+    "start": "node Backend/api/index.js",
+    "s": "cls && nodemon Backend/api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
