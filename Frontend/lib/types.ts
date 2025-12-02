@@ -1,13 +1,12 @@
 import z from "zod";
 import { signupFormSchema } from "./schema/user.schema";
 
+// Generic React Types
 type ReactChildren = {
   children: React.ReactNode;
 };
 
-type signupPayload = z.infer<typeof signupFormSchema>;
-type loginPayload = Pick<signupPayload, "email" | "password">;
-
+// Component Specific Types
 type testimonial = {
   userName: string;
   role: string;
@@ -44,13 +43,11 @@ export interface TaskState {
 }
 
 export interface AuthState {
-  isAuthenticated: boolean;
-  isAdminUser: boolean;
-  tokenExpiry: number;
+  user: UserState;
+  session: SessionState;
 
-  setIsAuthenticated: (flag: boolean) => void;
-  setIsAdminUser: (flag: boolean) => void;
-  setTokenExpiry: (t: number) => void;
+  setUserState: (e: string | null, r: "user" | "admin") => void;
+  setSessionState: (te: number, tw: number) => void;
   logout: () => void;
 }
 
@@ -64,7 +61,39 @@ type taskQueryResponse = {
   totalPages: number;
 };
 
+type userResponseState = {
+  fullName: string;
+  email: string | null;
+  role: "user" | "admin";
+};
+
+type UserState = {
+  email: string | null;
+  role: "user" | "admin";
+};
+
+type SessionState = {
+  tokenExpiry: number;
+  tokenWarning: number;
+};
+
+// Auth Types (Login, Signup, Logout, RefreshToken)
+type signupPayload = z.infer<typeof signupFormSchema>;
+type loginPayload = Pick<signupPayload, "email" | "password">;
+
+type authResponse = {
+  success: boolean;
+  message: string;
+  token: string;
+  tokenExpiry: number;
+  user: userResponseState;
+};
+
+type loginResponse = authResponse;
+
 export type {
+  SessionState,
+  UserState,
   loginPayload,
   mutationError,
   ReactChildren,
@@ -72,4 +101,5 @@ export type {
   Task,
   taskQueryResponse,
   testimonial,
+  loginResponse,
 };
