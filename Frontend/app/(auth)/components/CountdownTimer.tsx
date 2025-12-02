@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState(15);
+  const otpExpiryTime = Number(process.env.NEXT_PUBLIC_OTP_EXPIRY);
+  const [timeLeft, setTimeLeft] = useState(otpExpiryTime || 0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startCountdown = useCallback(() => {
@@ -48,7 +49,7 @@ const CountdownTimer = () => {
           <span
             className={cn({
               "text-red-500": timeLeft < 60,
-              "text-yellow-500": timeLeft >= 60 && timeLeft < 180,
+              "text-yellow-500": timeLeft >= 60 && timeLeft < 90,
               "text-black dark:text-white": timeLeft >= 180,
             })}
           >
