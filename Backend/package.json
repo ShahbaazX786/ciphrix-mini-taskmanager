@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "s": "nodemon backend/server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
