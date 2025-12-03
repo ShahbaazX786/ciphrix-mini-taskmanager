@@ -18,32 +18,48 @@ With Task Master, managing your tasks becomes effortless. Enjoy a smooth, intuit
 > email: hanmabaki@gmail.com
 > password: password
 
+> Verify OTP:(Just use this)
+> OTP is 123456
+
 ### What it does? Check for yourself
 
-<div style="
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: auto;
-  height: auto;
-  padding: 10px;
-  gap: 10px;
-">
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-1.png" alt="Splash Screen"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-2.png" alt="Home Screen"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-3.png" alt="Search"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-4.png" alt="Filters"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-5.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-6.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-7.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-8.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-9.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-10.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-11.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-12.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-13.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-14.png" alt="Categories"/>
-  <img style="border:1px solid black; border-radius:10px;" src="ProjectSnaps/Project-15.png" alt="Categories"/>
-</div>
+## Project Screenshots
+
+| Hero Section (Dark mode)                     | Hero Section                               |
+| -------------------------------------------- | ------------------------------------------ |
+| ![Splash Screen](ProjectSnaps/Project-1.png) | ![Home Screen](ProjectSnaps/Project-2.png) |
+
+| Login (Dark mode)                     | Login (With Form Validation)           |
+| ------------------------------------- | -------------------------------------- |
+| ![Search](ProjectSnaps/Project-3.png) | ![Filters](ProjectSnaps/Project-4.png) |
+
+| Signup(form validations)                  | signup (loading)                          |
+| ----------------------------------------- | ----------------------------------------- |
+| ![Categories](ProjectSnaps/Project-5.png) | ![Categories](ProjectSnaps/Project-6.png) |
+
+| login(loading)                            | Dashboard (With Data-Table)               |
+| ----------------------------------------- | ----------------------------------------- |
+| ![Categories](ProjectSnaps/Project-7.png) | ![Categories](ProjectSnaps/Project-8.png) |
+
+| Dashboard(Admin View)                     | Create Task                                |
+| ----------------------------------------- | ------------------------------------------ |
+| ![Categories](ProjectSnaps/Project-9.png) | ![Categories](ProjectSnaps/Project-10.png) |
+
+| Create Sucessful                           | Delete Alert                               |
+| ------------------------------------------ | ------------------------------------------ |
+| ![Categories](ProjectSnaps/Project-11.png) | ![Categories](ProjectSnaps/Project-12.png) |
+
+| Delete Sucessful                           | Edit Task                                  |
+| ------------------------------------------ | ------------------------------------------ |
+| ![Categories](ProjectSnaps/Project-13.png) | ![Categories](ProjectSnaps/Project-14.png) |
+
+| Signup Page (Empty)                        | OTP Verification                           |
+| ------------------------------------------ | ------------------------------------------ |
+| ![Categories](ProjectSnaps/Project-15.png) | ![Categories](ProjectSnaps/Project-16.png) |
+
+| Signup Sucessful (OTP Verified)            |
+| ------------------------------------------ |
+| ![Categories](ProjectSnaps/Project-17.png) |
 
 ## Features
 
