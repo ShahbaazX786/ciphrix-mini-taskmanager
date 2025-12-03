@@ -2,11 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend Server for Note Managing Application",
-  "main": "/Backend/api/index.js",
+  "main": "./api/index.js",
   "scripts": {
-    "start": "node Backend/api/index.js",
-    "s": "cls && nodemon Backend/api/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./api/index.js",
+    "s": "cls && nodemon ./api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "vercel-start": "node ./api/index.js"
   },
   "keywords": [],
   "author": "",
