@@ -7,8 +7,10 @@ import { columns } from "../components/columns";
 import { DataTable } from "../components/data-table";
 import EmptyDashboard from "./components/emptyDashboard";
 import TaskSheet from "./components/taskSheet";
+import useAuthGuard from "@/lib/hooks/useAuthGuard";
 
 const DashboardPage = () => {
+  useAuthGuard();
   const { tasks } = useTaskStore();
 
   return (

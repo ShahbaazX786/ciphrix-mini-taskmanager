@@ -5,8 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import useAuthGuard from "@/lib/hooks/useAuthGuard";
 
 const AuthForm = ({ mode }: { mode: "login" | "signup" }) => {
+  useAuthGuard();
   const isLoginMode = mode === "login";
   const appName = getAppName();
 

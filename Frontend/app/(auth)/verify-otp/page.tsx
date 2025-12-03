@@ -1,6 +1,10 @@
+"use client";
+
+import useAuthGuard from "@/lib/hooks/useAuthGuard";
 import VerifyOTPForm from "../components/VerifyOTPForm";
 
 const VerifyOTPPage = () => {
+  useAuthGuard();
   return (
     <main className="w-full h-screen bg-gray-300 dark:bg-gray-800 px-4 pt-[10%]">
       <div className="flex flex-col justify-start items-start gap-5">
