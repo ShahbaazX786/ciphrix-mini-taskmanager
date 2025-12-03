@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 
 const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    // return Math.floor(100000 + Math.random() * 900000).toString(); // Freaking vercel again!!!
+    return '123456'
 }
 
 const getOTPExpiryTime = () => {
