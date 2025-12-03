@@ -28,11 +28,12 @@ const SignupForm = () => {
     },
     onSuccess: (res: signupResponse) => {
       if (res?.success) {
+        setToken("tmptoken", res?.token);
+        setToken("tmptokenExpiry", JSON.stringify(res?.tokenExpiry));
         toast.dismiss();
         toast.success(res?.message, {
           richColors: true,
         });
-        setToken(res?.token);
         router.push("/verify-otp");
       }
     },
@@ -41,7 +42,8 @@ const SignupForm = () => {
       toast.error(err?.response?.data?.message, {
         richColors: true,
       });
-      removeToken();
+      removeToken("tmptoken");
+      removeToken("tmptokenExpiry");
       console.warn("Server Error:", err?.response?.data?.message);
     },
   });

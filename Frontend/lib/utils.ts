@@ -58,12 +58,12 @@ export const TableSortingFunction = (
 };
 
 // Cookie helpers
-export const setToken = (token: string) => {
-  localStorage.setItem("token", token);
+export const setToken = (name: string, token: string) => {
+  localStorage.setItem(name, token);
 };
 
-export const removeToken = () => {
-  localStorage.removeItem("token");
+export const removeToken = (name: string) => {
+  localStorage.removeItem(name);
 };
 
-export const getToken = () => localStorage.getItem("token");
+export const getToken = (name: string) => localStorage.getItem(name);

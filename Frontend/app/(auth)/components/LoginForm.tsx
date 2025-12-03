@@ -37,7 +37,10 @@ const LoginForm = () => {
       if (res?.success) {
         setUserState(res?.user?.fullName, res?.user?.email, res?.user?.role);
         setSessionState(res?.tokenExpiry, res?.tokenExpiry);
-        setToken(res?.token);
+        removeToken("tmptoken");
+        removeToken("tmptokenExpiry");
+        setToken("token", res?.token);
+        setToken("tokenExpiry", JSON.stringify(res?.tokenExpiry));
         toast.dismiss();
         toast.success("User Logged In Successfully!", {
           richColors: true,
@@ -48,8 +51,8 @@ const LoginForm = () => {
     onError: (err: mutationError) => {
       setUserState(null, null, "user");
       setSessionState(0, 0);
-      removeToken();
-
+      removeToken("tokenExpiry");
+      removeToken("token");
       toast.dismiss();
       toast.error(
         err?.response?.data?.message || "Server Error, Please check the logs",

@@ -19,6 +19,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import CountdownTimer from "./CountdownTimer";
 import SignupSuccessDialog from "./SignupSuccessDialog";
+import { removeToken } from "@/lib/utils";
 
 const VerifyOTPForm = () => {
   const [open, setOpen] = useState(false);
@@ -38,6 +39,8 @@ const VerifyOTPForm = () => {
     onSuccess: (res: verifyOTPResponse) => {
       if (res?.success) {
         setOpen(true);
+        removeToken("tmptoken");
+        removeToken("tmptokenExpiry");
         toast.dismiss();
         toast.success(res?.message, {
           richColors: true,

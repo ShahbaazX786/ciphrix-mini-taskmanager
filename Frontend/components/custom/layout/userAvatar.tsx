@@ -14,6 +14,7 @@ import {
 import { logoutUser } from "@/lib/api/api.auth";
 import { useAuthStore } from "@/lib/store/auth.store";
 import { userResponseState } from "@/lib/types";
+import { removeToken } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -30,6 +31,9 @@ const UserAvatar = ({ user }: { user: userResponseState }) => {
     onSuccess: () => {
       setUserState(null, null, "user");
       setSessionState(0, 0);
+      removeToken("token");
+      removeToken("temp-token");
+      removeToken("tokenExpiry");
       toast.dismiss();
       toast.success("User Logged Out Successfully", { richColors: true });
       router.push("/");
