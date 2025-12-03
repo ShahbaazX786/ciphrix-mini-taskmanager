@@ -1,41 +1,42 @@
 import express from "express";
-import cors from 'cors';
+import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-import authRoutes from '../routes/auth.routes.js';
-import taskRoutes from '../routes/task.routes.js';
+import authRoutes from "../routes/auth.routes.js";
+import taskRoutes from "../routes/task.routes.js";
 import mongoose from "mongoose";
 
 dotenv.config();
 
+let isConnected = false;
+
+async function connectToDB() {
+    if (isConnected) return;
+
+    try {
+        const conn = await mongoose.connect(process.env.MONGODB_URI);
+        isConnected = conn.connections[0].readyState === 1;
+
+        console.log("MongoDB Connected:", isConnected);
+    } catch (error) {
+        console.error("Mongo DB connection error:", error);
+    }
+}
+
+await connectToDB();
 
 const app = express();
 
-app.use(cors({ origin: process.env.ORIGIN, credentials: true }))
+app.use(
+    cors({
+        origin: process.env.ORIGIN,
+        credentials: true,
+    })
+);
+
 app.use(express.json());
 app.use(cookieParser());
-// await connectDB();
-
-let isConnected = false;
-async function connectToDB() {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-
-        isConnected = true;
-        console.log('Database connected');
-    } catch (error) {
-        console.error('Error connecting to DB', error);
-    }
-
-}
-
-app.use((_req, _res, next) => {
-    if (!isConnected) {
-        connectToDB();
-    }
-    next();
-})
 
 app.get("/", (_req, res) => {
     res.send("Backend is up and running");
