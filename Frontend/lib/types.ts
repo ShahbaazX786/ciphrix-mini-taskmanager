@@ -91,12 +91,17 @@ type authResponse = {
 };
 
 type loginResponse = authResponse;
+type signupResponse = Pick<
+  authResponse,
+  "success" | "message" | "token" | "tokenExpiry"
+>;
 type verifyOTPResponse = Pick<authResponse, "success" | "message">;
 type userRole = "user" | "admin";
 
 export type {
   loginPayload,
   loginResponse,
+  signupResponse,
   verifyOTPResponse,
   mutationError,
   ReactChildren,

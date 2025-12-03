@@ -7,6 +7,7 @@ import { loginUser } from "@/lib/api/api.auth";
 import { loginFormSchema } from "@/lib/schema/user.schema";
 import { useAuthStore } from "@/lib/store/auth.store";
 import { loginResponse, mutationError } from "@/lib/types";
+import { removeToken, setToken } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -36,7 +37,7 @@ const LoginForm = () => {
       if (res?.success) {
         setUserState(res?.user?.fullName, res?.user?.email, res?.user?.role);
         setSessionState(res?.tokenExpiry, res?.tokenExpiry);
-
+        setToken(res?.token);
         toast.dismiss();
         toast.success("User Logged In Successfully!", {
           richColors: true,
@@ -47,6 +48,7 @@ const LoginForm = () => {
     onError: (err: mutationError) => {
       setUserState(null, null, "user");
       setSessionState(0, 0);
+      removeToken();
 
       toast.dismiss();
       toast.error(

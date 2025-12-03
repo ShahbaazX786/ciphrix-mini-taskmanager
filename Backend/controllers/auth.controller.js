@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
+import sendWelcomeEmail from '../utils/nodemailer/sendWelcomeEmail.js';
 import { clearTokenInCookies, generateOTP, generateTokenAndSetCookie, getOTPExpiryTime, getUserDetail } from '../utils/helpers.js';
 
 const SignUp = async (req, res) => {
@@ -21,7 +22,7 @@ const SignUp = async (req, res) => {
         await user.save();
 
         const { token, tokenExpiry } = await generateTokenAndSetCookie(res, user._id, true);
-        // await sendWelcomeEmail(fullName, email, otp);
+        await sendWelcomeEmail(fullName, email, otp);
 
         res.status(201).json({
             success: true, message: "User Created Sucessfully", token, tokenExpiry

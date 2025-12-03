@@ -5,7 +5,8 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { signUpUser } from "@/lib/api/api.auth";
 import { signupFormSchema } from "@/lib/schema/user.schema";
-import { mutationError } from "@/lib/types";
+import { mutationError, signupResponse } from "@/lib/types";
+import { removeToken, setToken } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -25,12 +26,13 @@ const SignupForm = () => {
     onMutate: () => {
       toast.loading("Creating your account...");
     },
-    onSuccess: (res) => {
+    onSuccess: (res: signupResponse) => {
       if (res?.success) {
         toast.dismiss();
         toast.success(res?.message, {
           richColors: true,
         });
+        setToken(res?.token);
         router.push("/verify-otp");
       }
     },
@@ -39,6 +41,7 @@ const SignupForm = () => {
       toast.error(err?.response?.data?.message, {
         richColors: true,
       });
+      removeToken();
       console.warn("Server Error:", err?.response?.data?.message);
     },
   });

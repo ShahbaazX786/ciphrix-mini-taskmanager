@@ -3,20 +3,24 @@ import User from '../models/user.model.js';
 
 export const checkToken = async (req, res, next) => {
     try {
-        const token = req.cookies?.['tm-token'];
+        const authHeader = req.headers['authorization'];
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Unauthorized Access - No Token Provided' });
+        }
 
-        if (!token) return res.status(401).json({ message: 'Unauthorized Access - No Valid Token was Found' });
+        const token = authHeader.split(' ')[1];
 
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-        if (!decodedToken) return res.status(401).json({ success: false, message: 'Unauthorized Access - Invalid Token Found' })
+        if (!decodedToken) {
+            return res.status(401).json({ message: 'Unauthorized Access - Invalid Token' });
+        }
 
         req.userId = decodedToken.userId;
         req.user = await User.findById(decodedToken.userId).select('-password');
 
         next();
     } catch (error) {
-        console.log('Error in Verifying Token', error);
-        return res.status(500).json({ success: false, message: 'Server Error' });
+        console.error('Error in verifying token', error);
+        return res.status(401).json({ message: 'Unauthorized Access - Token Verification Failed' });
     }
-}
+};
