@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, removeToken } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const CountdownTimer = () => {
@@ -22,6 +22,11 @@ const CountdownTimer = () => {
       });
     }, 1000);
   }, []);
+
+  if (timeLeft) {
+    removeToken("tmptoken");
+    removeToken("tmptokenExpiry");
+  }
 
   useEffect(() => {
     startCountdown();
