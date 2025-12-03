@@ -20,6 +20,7 @@ const generateTokenAndSetCookie = async (res, userId, temp = false) => {
         secure: true,
         sameSite: 'none',
         maxAge: expiresInMs,
+        domain: 'vercel.app',
         path: '/'
     });
 
@@ -32,6 +33,7 @@ const clearTokenInCookies = async (res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
+        domain: 'vercel.app',
         path: '/'
     });
 }
