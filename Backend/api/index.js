@@ -34,7 +34,7 @@ async function connectToDB() {
 }
 
 app.use((_req, _res, next) => {
-    if (isConnected) {
+    if (!isConnected) {
         connectToDB();
     }
     next();
