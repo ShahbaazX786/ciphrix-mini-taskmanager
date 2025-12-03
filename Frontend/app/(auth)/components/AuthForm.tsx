@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldDescription } from "@/components/ui/field";
 import { getAppName } from "@/lib/utils";
