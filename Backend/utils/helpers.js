@@ -17,8 +17,8 @@ const generateTokenAndSetCookie = async (res, userId, temp = false) => {
 
     res.cookie("tm-token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        secure: true,
+        sameSite: 'none',
         maxAge: expiresInMs,
         path: '/'
     });
@@ -30,8 +30,8 @@ const generateTokenAndSetCookie = async (res, userId, temp = false) => {
 const clearTokenInCookies = async (res) => {
     await res.clearCookie('tm-token', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        secure: true,
+        sameSite: 'none',
         path: '/'
     });
 }
